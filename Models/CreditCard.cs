@@ -18,6 +18,6 @@ namespace Models
         public decimal Debt { get; set; }
         public bool IsActive { get; set; } = true;
         public Customer customer;
-        //public ICollection<Transaction> Transactions { get; set; }  
+        public ICollection<Transaction> Transactions { get; set; }  
     }
 }

@@ -4,6 +4,7 @@ using Models.DTOs.Account;
 using Models.DTOs.CreditCard;
 using Models.DTOs.Customer;
 using Models.DTOs.DebitCard;
+using Models.DTOs.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,13 @@ namespace Services.Config
             CreateMap<CreditCard, UpdateCreditCardDto>();
             CreateMap<ListCreditCardDto, CreditCard>();
             CreateMap<CreditCard, ListCreditCardDto>();
+
+            CreateMap<CreateTransactionDto, Transaction>();
+            CreateMap<Transaction, CreateTransactionDto>();
+            CreateMap<UpdateTransactionDto, Transaction>();
+            CreateMap<Transaction, UpdateTransactionDto>();
+            CreateMap<ListTransactionDto, Transaction>();
+            CreateMap<Transaction, ListTransactionDto>();
         }
     }
 }

@@ -17,6 +17,6 @@ namespace Models
         public decimal Balance { get; set; }
         public bool IsActive { get; set; } = true;
         public Account Account { get; set; }
-        //public ICollection<Transaction> Transactions { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
     }
 }

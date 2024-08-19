@@ -25,6 +25,8 @@ namespace Services.DependencyResolvers.Autofac
             builder.RegisterType<DebitCardDal>().As<IDebitCardDal>().SingleInstance();
             builder.RegisterType<CreditCardManager>().As<ICreditCardService>().SingleInstance();
             builder.RegisterType<CreditCardDal>().As<ICreditCardDal>().SingleInstance();
+            builder.RegisterType<TransactionManager>().As<ITransactionService>().SingleInstance();
+            builder.RegisterType<TransactionDal>().As<ITransactionDal>().SingleInstance();
             builder.RegisterType<GeneratorManager>().As<IGeneratorService>().SingleInstance();
             builder.RegisterType<BankingSystemContext>().AsSelf().InstancePerLifetimeScope();
 

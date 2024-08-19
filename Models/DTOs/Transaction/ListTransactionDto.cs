@@ -1,14 +1,13 @@
-﻿using Core.Models;
-using Models.Enums;
+﻿using Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Models.DTOs.Transaction
 {
-    public class Transaction : IEntity
+    public class ListTransactionDto
     {
         public int Id { get; set; }
         public int? DebitCardId { get; set; }
@@ -17,8 +16,5 @@ namespace Models
         public int Amount { get; set; }
         public CardType CardType { get; set; }
         public TransactionType Type { get; set; }
-        public DateTime Date { get; set; } = DateTime.Now;
-        public DebitCard DebitCard { get; set; }
-        public CreditCard CreditCard { get; set; }
     }
 }
