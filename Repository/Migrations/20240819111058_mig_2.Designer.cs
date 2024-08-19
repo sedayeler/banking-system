@@ -12,8 +12,8 @@ using Repositories.Concrete;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(BankingSystemContext))]
-    [Migration("20240816153909_mig_1")]
-    partial class mig1
+    [Migration("20240819111058_mig_2")]
+    partial class mig2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,45 @@ namespace Repositories.Migrations
                     b.ToTable("accounts");
                 });
 
+            modelBuilder.Entity("Models.CreditCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CCV")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Debt")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("ExpirationDate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("Limit")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("credit_cards");
+                });
+
             modelBuilder.Entity("Models.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -95,6 +134,42 @@ namespace Repositories.Migrations
                     b.ToTable("customers");
                 });
 
+            modelBuilder.Entity("Models.DebitCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("CCV")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExpirationDate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("debit_cards");
+                });
+
             modelBuilder.Entity("Models.Account", b =>
                 {
                     b.HasOne("Models.Customer", "Customer")
@@ -106,9 +181,36 @@ namespace Repositories.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("Models.CreditCard", b =>
+                {
+                    b.HasOne("Models.Customer", null)
+                        .WithMany("CreditCards")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Models.DebitCard", b =>
+                {
+                    b.HasOne("Models.Account", "Account")
+                        .WithMany("DebitCards")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("Models.Account", b =>
+                {
+                    b.Navigation("DebitCards");
+                });
+
             modelBuilder.Entity("Models.Customer", b =>
                 {
                     b.Navigation("Accounts");
+
+                    b.Navigation("CreditCards");
                 });
 #pragma warning restore 612, 618
         }

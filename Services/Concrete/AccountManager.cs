@@ -18,22 +18,14 @@ namespace Services.Concrete
         private readonly IAccountDal _accountDal;
         private readonly BankingSystemContext _context;
         private readonly IMapper _mapper;
+        private readonly IGeneratorService _generatorService;
 
-        public AccountManager(IAccountDal accountDal, BankingSystemContext context, IMapper mapper)
+        public AccountManager(IAccountDal accountDal, BankingSystemContext context, IMapper mapper, IGeneratorService generatorService)
         {
             _accountDal = accountDal;
             _context = context;
             _mapper = mapper;
-        }
-
-        public string GenerateAccountNumber()
-        {
-            return new Random().Next(100000000, 999999999).ToString();
-        }
-
-        public string GenerateIBAN()
-        {
-            return "TR" + new Random().Next(100000000, 999999999).ToString();
+            _generatorService = generatorService;
         }
 
         public IResult Add(CreateAccountDto dto)
@@ -59,8 +51,8 @@ namespace Services.Concrete
             {
                 CustomerId = dto.CustomerId,
                 AccountName = dto.AccountName,
-                IBAN = GenerateIBAN(),
-                AccountNumber = GenerateAccountNumber(),
+                IBAN = _generatorService.GenerateIBAN(),
+                AccountNumber = _generatorService.GenerateAccountNumber(),
                 Balance = dto.Balance,
                 Date = DateTime.UtcNow,
                 IsActive = true

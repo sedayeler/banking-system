@@ -65,6 +65,10 @@ namespace Services.Concrete
             {
                 return new ErrorResult("The national ID number must be 11 characters long.");
             }
+            if (dto.RiskLimit <= 0)
+            {
+                return new ErrorResult("The risk limit cannot be equal to or less than 0.");
+            }
             Customer updateCustomer = _mapper.Map(dto, existingCustomer);
             _customerDal.Update(updateCustomer);
             return new SuccessResult("Customer updated.");

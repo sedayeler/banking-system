@@ -4,7 +4,7 @@ using Services.Abstract;
 
 namespace WebAPI.Controllers
 {
-    [Route("/api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class DebitCardsController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
 
         [HttpPut("UpdateDebitCard")]
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
 
         [HttpDelete("DeleteDebitCard")]
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
 
         [HttpGet("Get")]
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
 
         [HttpGet("GetAll")]
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
     }
 }

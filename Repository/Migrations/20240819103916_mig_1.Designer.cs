@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Repositories.Concrete;
@@ -11,9 +12,11 @@ using Repositories.Concrete;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(BankingSystemContext))]
-    partial class BankingSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240819103916_mig_1")]
+    partial class mig1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +100,7 @@ namespace Repositories.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("credit_cards");
+                    b.ToTable("CreditCard");
                 });
 
             modelBuilder.Entity("Models.Customer", b =>
@@ -164,7 +167,7 @@ namespace Repositories.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("debit_cards");
+                    b.ToTable("DebitCard");
                 });
 
             modelBuilder.Entity("Models.Account", b =>

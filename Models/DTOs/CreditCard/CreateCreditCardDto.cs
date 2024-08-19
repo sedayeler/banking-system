@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.DTOs.DebitCard
+namespace Models.DTOs.CreditCard
 {
-    public class CreateDebitCardDto
+    public class CreateCreditCardDto
     {
-        public int AccountId { get; set; }
+        public int CustomerId { get; set; }
         public DateOnly ExpirationDate { get; set; }
-        public decimal Balance { get; set; }
+        public decimal Limit { get; set; }
     }
 }

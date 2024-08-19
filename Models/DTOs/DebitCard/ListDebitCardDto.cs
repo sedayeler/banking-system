@@ -11,7 +11,7 @@ namespace Models.DTOs.DebitCard
         public int Id { get; set; }
         public int AccountId { get; set; }
         public string CardNumber { get; set; }
-        public DateOnly ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; }
         public string CCV { get; set; }
         public decimal Balance { get; set; }
         public bool IsActive { get; set; }

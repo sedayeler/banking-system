@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Models;
 using Models.DTOs.Account;
+using Models.DTOs.CreditCard;
 using Models.DTOs.Customer;
 using Models.DTOs.DebitCard;
 using System;
@@ -36,12 +37,12 @@ namespace Services.Config
             CreateMap<ListDebitCardDto, DebitCard>();
             CreateMap<DebitCard, ListDebitCardDto>();
 
-            //CreateMap<CreateCreditCardDto, DebitCard>();
-            //CreateMap<DebitCard, CreateDebitCardDto>();
-            //CreateMap<UpdateDebitCardDto, DebitCard>();
-            //CreateMap<DebitCard, UpdateDebitCardDto>();
-            //CreateMap<ListDebitCardDto, DebitCard>();
-            //CreateMap<DebitCard, ListDebitCardDto>();
+            CreateMap<CreateCreditCardDto, CreditCard>();
+            CreateMap<CreditCard, CreateCreditCardDto>();
+            CreateMap<UpdateCreditCardDto, CreditCard>();
+            CreateMap<CreditCard, UpdateCreditCardDto>();
+            CreateMap<ListCreditCardDto, CreditCard>();
+            CreateMap<CreditCard, ListCreditCardDto>();
         }
     }
 }

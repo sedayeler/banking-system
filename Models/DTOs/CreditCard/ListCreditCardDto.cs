@@ -1,13 +1,12 @@
-﻿using Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Models.DTOs.CreditCard
 {
-    public class CreditCard : IEntity
+    public class ListCreditCardDto
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
@@ -16,8 +15,6 @@ namespace Models
         public string CCV { get; set; }
         public decimal Limit { get; set; }
         public decimal Debt { get; set; }
-        public bool IsActive { get; set; } = true;
-        public Customer customer;
-        //public ICollection<Transaction> Transactions { get; set; }  
+        public bool IsActive { get; set; }
     }
 }

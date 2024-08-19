@@ -14,6 +14,6 @@ namespace Services.Abstract
         IResult Update(UpdateDebitCardDto dto);
         IResult Delete(int id);
         IDataResult<ListDebitCardDto> GetById(int id);
-        IDataResult<ListDebitCardDto> GetAll();
+        IDataResult<List<ListDebitCardDto>> GetAll();
     }
 }

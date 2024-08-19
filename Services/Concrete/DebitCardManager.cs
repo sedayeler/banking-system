@@ -21,25 +21,14 @@ namespace Services.Concrete
         private readonly IDebitCardDal _debitCardDal;
         private readonly BankingSystemContext _context;
         private readonly IMapper _mapper;
+        private readonly IGeneratorService _generatorService;
 
-        public DebitCardManager(IDebitCardDal debitCardDal, BankingSystemContext context, IMapper mapper)
+        public DebitCardManager(IDebitCardDal debitCardDal, BankingSystemContext context, IMapper mapper, IGeneratorService generatorService)
         {
             _debitCardDal = debitCardDal;
             _context = context;
             _mapper = mapper;
-        }
-
-        private string GenerateCardNumber()
-        {
-            Random random = new Random();
-            string cardNumber = string.Empty;
-
-            for (int i = 0; i < 16; i++)
-            {
-                cardNumber += random.Next(0, 10).ToString();
-            }
-
-            return cardNumber;
+            _generatorService = generatorService;
         }
 
         public IResult Add(CreateDebitCardDto dto)
@@ -53,22 +42,18 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Account not found.");
             }
-            if (dto.CCV.Length != 3)
-            {
-                return new ErrorResult("The CVV code must be 3 characters long.");
-            }
             if (dto.Balance < 0)
             {
-                return new ErrorResult("Balance cannot be less than 0.");
+                return new ErrorResult("The balance cannot be less than 0.");
             }
             string dateFormat = "MM/yy";
             var formattedDate = dto.ExpirationDate.ToString(dateFormat, CultureInfo.InvariantCulture);
             DebitCard newDebitCard = new DebitCard()
             {
                 AccountId = dto.AccountId,
-                CardNumber = GenerateCardNumber(),
+                CardNumber = _generatorService.GenerateCardNumber(),
                 ExpirationDate = formattedDate,
-                CCV = dto.CCV,
+                CCV = _generatorService.GenerateCCV(),
                 Balance = dto.Balance,
                 IsActive = true
             };
@@ -78,7 +63,7 @@ namespace Services.Concrete
 
         public IResult Update(UpdateDebitCardDto dto)
         {
-            if (dto.Id <= 0 && dto.AccountId <= 0)
+            if (dto.Id <= 0 || dto.AccountId <= 0)
             {
                 return new ErrorResult("Invalid id.");
             }
@@ -131,11 +116,11 @@ namespace Services.Concrete
             return new SuccessDataResult<ListDebitCardDto>(listDebitCard, "Debit card listed.");
         }
 
-        public IDataResult<ListDebitCardDto> GetAll()
+        public IDataResult<List<ListDebitCardDto>> GetAll()
         {
             var debitCards = _debitCardDal.GetAll();
-            var existingDebitCards = _mapper.Map<ListDebitCardDto>(debitCards);
-            return new SuccessDataResult<ListDebitCardDto>(existingDebitCards, "Debit cards listed.");
+            var existingDebitCards = _mapper.Map<List<ListDebitCardDto>>(debitCards);
+            return new SuccessDataResult<List<ListDebitCardDto>>(existingDebitCards, "Debit cards listed.");
         }
     }
 }

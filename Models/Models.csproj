@@ -10,11 +10,4 @@
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Account\" />
-    <Folder Include="DTOs\CreditCard\" />
-    <Folder Include="DTOs\Customer\" />
-    <Folder Include="DTOs\DebitCard\" />
-  </ItemGroup>
-
 </Project>

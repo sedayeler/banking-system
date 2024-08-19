@@ -1,25 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Models;
-using Models.DTOs.Customer;
+using Models.DTOs.CreditCard;
 using Services.Abstract;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class CreditCardsController : ControllerBase
     {
-        ICustomerService _customerService;
+        private readonly ICreditCardService _creditCardService;
 
-        public CustomersController(ICustomerService customerService)
+        public CreditCardsController(ICreditCardService creditCardService)
         {
-            _customerService = customerService;
+            _creditCardService = creditCardService;
         }
 
-        [HttpPost("AddCustomer")]
-        public IActionResult Add(CreateCustomerDto dto)
+        [HttpPost("AddCreditCard")]
+        public IActionResult Add(CreateCreditCardDto dto)
         {
-            var result = _customerService.Add(dto);
+            var result = _creditCardService.Add(dto);
             if (result.Success)
             {
                 return Ok(result);
@@ -27,10 +26,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("UpdateCustomer")]
-        public IActionResult Update(UpdateCustomerDto dto)
+        [HttpPut("UpdateCreditCard")]
+        public IActionResult Update(UpdateCreditCardDto dto)
         {
-            var result = _customerService.Update(dto);
+            var result = _creditCardService.Update(dto);
             if (result.Success)
             {
                 return Ok(result);
@@ -38,10 +37,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpDelete("DeleteCustomer")]
+        [HttpDelete("DeleteCreditCard")]
         public IActionResult Delete(int id)
         {
-            var result = _customerService.Delete(id);
+            var result = _creditCardService.Delete(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +49,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("Get")]
-        public IActionResult GetById(int id)
+        public IActionResult Get(int id)
         {
-            var result = _customerService.GetById(id);
+            var result = _creditCardService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -63,7 +62,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
-            var result = _customerService.GetAll();
+            var result = _creditCardService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

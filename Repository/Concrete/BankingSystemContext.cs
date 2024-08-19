@@ -17,9 +17,8 @@ namespace Repositories.Concrete
 
         public DbSet<Customer> customers { get; set; }
         public DbSet<Account> accounts { get; set; }
-        //public DbSet<Card> cards { get; set; }
-        //public DbSet<DebitCard> debit_cards { get; set; }
-        //public DbSet<CreditCard> credit_cards { get; set; }
+        public DbSet<DebitCard> debit_cards { get; set; }
+        public DbSet<CreditCard> credit_cards { get; set; }
         //public DbSet<Transaction> transactions { get; set; }
     }
 }
