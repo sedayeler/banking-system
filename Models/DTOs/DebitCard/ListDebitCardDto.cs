@@ -1,22 +1,19 @@
-﻿using Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Models.DTOs.DebitCard
 {
-    public class DebitCard : IEntity
+    public class ListDebitCardDto
     {
         public int Id { get; set; }
         public int AccountId { get; set; }
         public string CardNumber { get; set; }
-        public string ExpirationDate { get; set; }
+        public DateOnly ExpirationDate { get; set; }
         public string CCV { get; set; }
         public decimal Balance { get; set; }
-        public bool IsActive { get; set; } = true;
-        public Account Account { get; set; }
-        //public ICollection<Transaction> Transactions { get; set; }
+        public bool IsActive { get; set; }
     }
 }

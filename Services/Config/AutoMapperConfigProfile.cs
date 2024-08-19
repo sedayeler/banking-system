@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Models;
-using Models.DTOs;
+using Models.DTOs.Account;
+using Models.DTOs.Customer;
+using Models.DTOs.DebitCard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,20 @@ namespace Services.Config
             CreateMap<Account, UpdateAccountDto>();
             CreateMap<ListAccountDto, Account>();
             CreateMap<Account, ListAccountDto>();
+
+            CreateMap<CreateDebitCardDto, DebitCard>();
+            CreateMap<DebitCard, CreateDebitCardDto>();
+            CreateMap<UpdateDebitCardDto, DebitCard>();
+            CreateMap<DebitCard, UpdateDebitCardDto>();
+            CreateMap<ListDebitCardDto, DebitCard>();
+            CreateMap<DebitCard, ListDebitCardDto>();
+
+            //CreateMap<CreateCreditCardDto, DebitCard>();
+            //CreateMap<DebitCard, CreateDebitCardDto>();
+            //CreateMap<UpdateDebitCardDto, DebitCard>();
+            //CreateMap<DebitCard, UpdateDebitCardDto>();
+            //CreateMap<ListDebitCardDto, DebitCard>();
+            //CreateMap<DebitCard, ListDebitCardDto>();
         }
     }
 }

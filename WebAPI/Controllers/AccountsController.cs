@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Models.DTOs;
 using Models;
 using Services.Abstract;
+using Models.DTOs.Account;
 
 namespace WebAPI.Controllers
 {

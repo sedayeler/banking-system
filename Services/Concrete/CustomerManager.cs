@@ -3,7 +3,7 @@ using Core.Models;
 using Core.Utilities.Result;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Models.DTOs;
+using Models.DTOs.Customer;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;

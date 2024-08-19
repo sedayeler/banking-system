@@ -1,11 +1,12 @@
 ﻿using Core.Utilities.Result;
 using Models;
+using Models.DTOs.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Models.DTOs;
+
 
 namespace Services.Abstract
 {

@@ -7,9 +7,17 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class CreditCard : Card
-    {
-        public decimal Limit { get; set; }
-        public decimal Debt { get; set; }
-    }
+    //public class CreditCard : IEntity
+    //{
+    //    public int Id { get; set; }
+    //    public int CustomerId { get; set; }
+    //    public string CardNumber { get; set; }
+    //    public string ExpirationDate { get; set; }
+    //    public string CCV { get; set; }
+    //    public decimal Limit { get; set; }
+    //    public decimal Debt { get; set; }
+    //    public bool IsActive { get; set; } = true;    
+    //    public Customer customer;
+    //    //public ICollection<Transaction> Transactions { get; set; }  
+    //}
 }

@@ -18,6 +18,6 @@ namespace Models
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
         public Customer Customer { get; set; }
-        //public ICollection<Card> Cards { get; set; }
+        public ICollection<DebitCard> DebitCards { get; set; }
     }
 }

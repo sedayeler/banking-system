@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Core.Models;
 using Core.Utilities.Result;
 using Models;
-using Models.DTOs;
+using Models.DTOs.Account;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
@@ -56,7 +55,7 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Balance cannot be less than 0.");
             }
-            var newAccount = new Account
+            Account newAccount = new Account
             {
                 CustomerId = dto.CustomerId,
                 AccountName = dto.AccountName,

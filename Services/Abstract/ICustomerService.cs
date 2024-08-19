@@ -1,6 +1,6 @@
 ﻿using Core.Utilities.Result;
 using Models;
-using Models.DTOs;
+using Models.DTOs.Customer;
 using System;
 using System.Collections.Generic;
 using System.Linq;

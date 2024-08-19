@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.DTOs
+namespace Models.DTOs.Customer
 {
-    public class UpdateCustomerDto
+    public class ListCustomerDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }

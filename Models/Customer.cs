@@ -16,5 +16,6 @@ namespace Models
         public DateOnly BirthDate { get; set; }
         public decimal RiskLimit { get; set; } = 10000m;
         public ICollection<Account> Accounts { get; set; }
+        public ICollection<CreditCard> CreditCards { get; set; }
     }
 }

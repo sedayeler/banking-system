@@ -21,6 +21,10 @@ namespace Services.DependencyResolvers.Autofac
             builder.RegisterType<CustomerDal>().As<ICustomerDal>().SingleInstance();
             builder.RegisterType<AccountManager>().As<IAccountService>().SingleInstance();
             builder.RegisterType<AccountDal>().As<IAccountDal>().SingleInstance();
+            builder.RegisterType<DebitCardManager>().As<IDebitCardService>().SingleInstance();
+            builder.RegisterType<DebitCardDal>().As<IDebitCardDal>().SingleInstance();
+            //builder.RegisterType<CreditCardManager>().As<IDebitCardService>().SingleInstance();
+            //builder.RegisterType<DebitCardDal>().As<IDebitCardDal>().SingleInstance();
             builder.RegisterType<BankingSystemContext>().AsSelf().InstancePerLifetimeScope();
 
             var mapperConfig = new MapperConfiguration(cfg =>
