@@ -35,14 +35,18 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id");
             }
-            var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
-            if (!customer)
+            var customer = _context.customers.SingleOrDefault(c => c.Id == dto.CustomerId);
+            if (customer == null)
             {
                 return new ErrorResult("Customer not found.");
             }
             if (dto.Limit <= 0)
             {
                 return new ErrorResult("Limit cannot be equal to or less than 0.");
+            }
+            if(dto.Limit > customer.RiskLimit)
+            {
+                return new ErrorResult("Invalid limit.");
             }
 
             string dateFormat = "MM/yy";
