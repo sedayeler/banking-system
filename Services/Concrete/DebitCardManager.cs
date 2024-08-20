@@ -37,15 +37,16 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingAccount = _context.accounts.Any(a => a.Id == dto.AccountId);
-            if (!existingAccount)
+            var account = _context.accounts.Any(a => a.Id == dto.AccountId);
+            if (!account)
             {
                 return new ErrorResult("Account not found.");
             }
             if (dto.Balance < 0)
             {
-                return new ErrorResult("The balance cannot be less than 0.");
+                return new ErrorResult("Balance cannot be less than 0.");
             }
+
             string dateFormat = "MM/yy";
             var formattedDate = dto.ExpirationDate.ToString(dateFormat, CultureInfo.InvariantCulture);
             DebitCard newDebitCard = new DebitCard()
@@ -67,13 +68,13 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingDebitCard = _debitCardDal.Get(d => d.Id == dto.Id);
-            if (existingDebitCard == null)
+            var debitCard = _debitCardDal.Get(d => d.Id == dto.Id);
+            if (debitCard == null)
             {
                 return new ErrorResult("Debit card not found.");
             }
-            var existingAccount = _context.accounts.Any(a => a.Id == dto.AccountId);
-            if (!existingAccount)
+            var account = _context.accounts.Any(a => a.Id == dto.AccountId);
+            if (!account)
             {
                 return new ErrorResult("Account not found.");
             }
@@ -81,7 +82,7 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Balance cannot be less than 0.");
             }
-            DebitCard updateDebitCard = _mapper.Map(dto, existingDebitCard);
+            DebitCard updateDebitCard = _mapper.Map(dto, debitCard);
             _debitCardDal.Update(updateDebitCard);
             return new SuccessResult("Debit card updated.");
         }
@@ -92,12 +93,12 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingDebitCard = _debitCardDal.Get(d => d.Id == id);
-            if (existingDebitCard == null)
+            var debitCard = _debitCardDal.Get(d => d.Id == id);
+            if (debitCard == null)
             {
                 return new ErrorResult("Debit card not found.");
             }
-            _debitCardDal.Delete(existingDebitCard);
+            _debitCardDal.Delete(debitCard);
             return new SuccessResult("Debit card deleted.");
         }
 
@@ -107,20 +108,20 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListDebitCardDto>("Invalid id.");
             }
-            var existingDebitCard = _debitCardDal.Get(d => d.Id == id);
-            if (existingDebitCard == null)
+            var debitCard = _debitCardDal.Get(d => d.Id == id);
+            if (debitCard == null)
             {
                 return new ErrorDataResult<ListDebitCardDto>("Debit card not found.");
             }
-            var listDebitCard = _mapper.Map<ListDebitCardDto>(existingDebitCard);
+            var listDebitCard = _mapper.Map<ListDebitCardDto>(debitCard);
             return new SuccessDataResult<ListDebitCardDto>(listDebitCard, "Debit card listed.");
         }
 
         public IDataResult<List<ListDebitCardDto>> GetAll()
         {
             var debitCards = _debitCardDal.GetAll();
-            var existingDebitCards = _mapper.Map<List<ListDebitCardDto>>(debitCards);
-            return new SuccessDataResult<List<ListDebitCardDto>>(existingDebitCards, "Debit cards listed.");
+            var listDebitCards = _mapper.Map<List<ListDebitCardDto>>(debitCards);
+            return new SuccessDataResult<List<ListDebitCardDto>>(listDebitCards, "Debit cards listed.");
         }
     }
 }

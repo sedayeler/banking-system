@@ -34,16 +34,16 @@ namespace Services.Concrete
         {
             if (dto.FullName.Length > 100)
             {
-                return new ErrorResult("The full name field cannot exceed 100 characters.");
+                return new ErrorResult("Full name field cannot exceed 100 characters.");
             }
-            var existingCustomer = _context.customers.Any(c => c.NationalId == dto.NationalId);
-            if (existingCustomer)
+            var customer = _context.customers.Any(c => c.NationalId == dto.NationalId);
+            if (customer)
             {
-                return new ErrorResult("This national ID number is already in use.");
+                return new ErrorResult("National ID number is already in use.");
             }
             if (dto.NationalId.Length != 11)
             {
-                return new ErrorResult("The national ID number must be 11 characters long.");
+                return new ErrorResult("National ID number must be 11 characters long.");
             }
             Customer newCustomer = _mapper.Map<Customer>(dto);
             _customerDal.Add(newCustomer);
@@ -56,20 +56,20 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingCustomer = _customerDal.Get(c => c.Id == dto.Id);
-            if (existingCustomer == null)
+            var customer = _customerDal.Get(c => c.Id == dto.Id);
+            if (customer == null)
             {
                 return new ErrorResult("Customer not found.");
             }
             if (dto.NationalId.Length != 11)
             {
-                return new ErrorResult("The national ID number must be 11 characters long.");
+                return new ErrorResult("National ID number must be 11 characters long.");
             }
             if (dto.RiskLimit <= 0)
             {
-                return new ErrorResult("The risk limit cannot be equal to or less than 0.");
+                return new ErrorResult("Risk limit cannot be equal to or less than 0.");
             }
-            Customer updateCustomer = _mapper.Map(dto, existingCustomer);
+            Customer updateCustomer = _mapper.Map(dto, customer);
             _customerDal.Update(updateCustomer);
             return new SuccessResult("Customer updated.");
         }
@@ -80,12 +80,12 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingCustomer = _customerDal.Get(c => c.Id == id);
-            if (existingCustomer == null)
+            var customer = _customerDal.Get(c => c.Id == id);
+            if (customer == null)
             {
                 return new ErrorResult("Customer not found.");
             }
-            _customerDal.Delete(existingCustomer);
+            _customerDal.Delete(customer);
             return new SuccessResult("Customer deleted.");
         }
 
@@ -95,12 +95,12 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListCustomerDto>("Invalid id.");
             }
-            var existingCustomer = _customerDal.Get(c => c.Id == id);
-            if (existingCustomer == null)
+            var customer = _customerDal.Get(c => c.Id == id);
+            if (customer == null)
             {
                 return new ErrorDataResult<ListCustomerDto>("Customer not found.");
             }
-            var listCustomer = _mapper.Map<ListCustomerDto>(existingCustomer);
+            var listCustomer = _mapper.Map<ListCustomerDto>(customer);
             return new SuccessDataResult<ListCustomerDto>(listCustomer, "Customer listed.");
         }
 

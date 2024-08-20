@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,6 @@ namespace Repositories.Concrete
         public DbSet<Account> accounts { get; set; }
         public DbSet<DebitCard> debit_cards { get; set; }
         public DbSet<CreditCard> credit_cards { get; set; }
-        //public DbSet<Transaction> transactions { get; set; }
+        public DbSet<Transaction> transactions { get; set; }
     }
 }

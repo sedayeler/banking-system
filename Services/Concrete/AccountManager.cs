@@ -34,14 +34,14 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingCustomer = _context.customers.Any(c => c.Id == dto.CustomerId);
-            if (!existingCustomer)
+            var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
+            if (!customer)
             {
                 return new ErrorResult("Customer not found.");
             }
             if (dto.AccountName.Length > 50)
             {
-                return new ErrorResult("The account name field cannot exceed 50 characters.");
+                return new ErrorResult("Account name field cannot exceed 50 characters.");
             }
             if (dto.Balance < 0)
             {
@@ -67,25 +67,25 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingAccount = _accountDal.Get(a => a.Id == dto.Id);
-            if (existingAccount == null)
+            var account = _accountDal.Get(a => a.Id == dto.Id);
+            if (account == null)
             {
                 return new ErrorResult("Account not found.");
             }
-            var existingCustomer = _context.customers.Any(c => c.Id == dto.CustomerId);
-            if (!existingCustomer)
+            var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
+            if (!customer)
             {
                 return new ErrorResult("Customer not found.");
             }
             if (dto.AccountName.Length > 50)
             {
-                return new ErrorResult("The account name field cannot exceed 50 characters.");
+                return new ErrorResult("Account name field cannot exceed 50 characters.");
             }
             if (dto.Balance < 0)
             {
                 return new ErrorResult("Balance cannot be less than 0.");
             }
-            Account updateAccount = _mapper.Map(dto, existingAccount);
+            Account updateAccount = _mapper.Map(dto, account);
             _accountDal.Update(updateAccount);
             return new SuccessResult("Account updated.");
         }
@@ -96,12 +96,12 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
-            var existingAccount = _accountDal.Get(a => a.Id == id);
-            if (existingAccount == null)
+            var account = _accountDal.Get(a => a.Id == id);
+            if (account == null)
             {
                 return new ErrorResult("Account not found.");
             }
-            _accountDal.Delete(existingAccount);
+            _accountDal.Delete(account);
             return new SuccessResult("Account deleted.");
         }
 
@@ -111,12 +111,12 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListAccountDto>("Invalid id.");
             }
-            var existingAccount = _accountDal.Get(c => c.Id == id);
-            if (existingAccount == null)
+            var account = _accountDal.Get(c => c.Id == id);
+            if (account == null)
             {
                 return new ErrorDataResult<ListAccountDto>("Account not found.");
             }
-            var listAccount = _mapper.Map<ListAccountDto>(existingAccount);
+            var listAccount = _mapper.Map<ListAccountDto>(account);
             return new SuccessDataResult<ListAccountDto>(listAccount, "Account listed.");
         }
 
