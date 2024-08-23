@@ -15,8 +15,8 @@ namespace Models
         public string AccountNumber { get; set; }
         public string IBAN { get; set; }
         public decimal Balance { get; set; }
-        public DateTime Date { get; set; } = DateTime.UtcNow;
-        public bool IsActive { get; set; } = true;
+        public DateTime Date { get; set; }
+        public bool IsActive { get; set; } 
         public Customer Customer { get; set; }
         public ICollection<DebitCard> DebitCards { get; set; }
     }

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Models;
 using Models.DTOs.CreditCard;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
+using Services.ValidationRules.CreditCard;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -31,20 +33,15 @@ namespace Services.Concrete
 
         public IResult Add(CreateCreditCardDto dto)
         {
-            if (dto.CustomerId <= 0)
-            {
-                return new ErrorResult("Invalid id");
-            }
+            ValidationTool.Validate(new CreateCreditCardValidator(), dto);
+
             var customer = _context.customers.SingleOrDefault(c => c.Id == dto.CustomerId);
             if (customer == null)
             {
                 return new ErrorResult("Customer not found.");
             }
-            if (dto.Limit <= 0)
-            {
-                return new ErrorResult("Limit cannot be equal to or less than 0.");
-            }
-            if(dto.Limit > customer.RiskLimit)
+
+            if (dto.Limit > customer.RiskLimit)
             {
                 return new ErrorResult("Invalid limit.");
             }
@@ -57,7 +54,8 @@ namespace Services.Concrete
                 CardNumber = _generatorService.GenerateCardNumber(),
                 ExpirationDate = formattedDate,
                 CCV = _generatorService.GenerateCCV(),
-                Limit = dto.Limit
+                Limit = dto.Limit,
+                IsActive = true
             };
             _creditCardDal.Add(newCreditCard);
             return new SuccessResult("Credit card created.");
@@ -65,28 +63,20 @@ namespace Services.Concrete
 
         public IResult Update(UpdateCreditCardDto dto)
         {
-            if (dto.Id <= 0 || dto.CustomerId <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new UpdateCreditCardValidator(), dto);
+
             var creditCard = _creditCardDal.Get(c => c.Id == dto.Id);
             if (creditCard == null)
             {
                 return new ErrorResult("Credit card not found.");
             }
+
             var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
             if (!customer)
             {
                 return new ErrorResult("Customer not found.");
             }
-            if (dto.Limit <= 0)
-            {
-                return new ErrorResult("Limit cannot be equal to or less than 0.");
-            }
-            if (dto.Debt < 0)
-            {
-                return new ErrorResult("Debt cannot be less than 0.");
-            }
+
             CreditCard updateCreditCard = _mapper.Map(dto, creditCard);
             _creditCardDal.Update(updateCreditCard);
             return new SuccessResult("Credit card updated.");
@@ -98,11 +88,13 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
+
             var creditCard = _creditCardDal.Get(c => c.Id == id);
             if (creditCard == null)
             {
                 return new ErrorResult("Credit card not found.");
             }
+
             _creditCardDal.Delete(creditCard);
             return new SuccessResult("Credit card deleted.");
         }
@@ -113,11 +105,13 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListCreditCardDto>("Invalid id.");
             }
+
             var creditCard = _creditCardDal.Get(c => c.Id == id);
             if (creditCard == null)
             {
                 return new ErrorDataResult<ListCreditCardDto>("Credit card not found.");
             }
+
             var listCreditCard = _mapper.Map<ListCreditCardDto>(creditCard);
             return new SuccessDataResult<ListCreditCardDto>(listCreditCard, "Credit card listed.");
         }

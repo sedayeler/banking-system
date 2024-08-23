@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Models;
 using Models.DTOs.Account;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
+using Services.ValidationRules.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,23 +32,14 @@ namespace Services.Concrete
 
         public IResult Add(CreateAccountDto dto)
         {
-            if (dto.CustomerId <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new CreatAccountValidator(), dto);
+
             var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
             if (!customer)
             {
                 return new ErrorResult("Customer not found.");
             }
-            if (dto.AccountName.Length > 50)
-            {
-                return new ErrorResult("Account name field cannot exceed 50 characters.");
-            }
-            if (dto.Balance < 0)
-            {
-                return new ErrorResult("Balance cannot be less than 0.");
-            }
+
             Account newAccount = new Account
             {
                 CustomerId = dto.CustomerId,
@@ -63,28 +56,20 @@ namespace Services.Concrete
 
         public IResult Update(UpdateAccountDto dto)
         {
-            if (dto.Id <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new UpdateAccountValidator(), dto);
+
             var account = _accountDal.Get(a => a.Id == dto.Id);
             if (account == null)
             {
                 return new ErrorResult("Account not found.");
             }
+
             var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
             if (!customer)
             {
                 return new ErrorResult("Customer not found.");
             }
-            if (dto.AccountName.Length > 50)
-            {
-                return new ErrorResult("Account name field cannot exceed 50 characters.");
-            }
-            if (dto.Balance < 0)
-            {
-                return new ErrorResult("Balance cannot be less than 0.");
-            }
+
             Account updateAccount = _mapper.Map(dto, account);
             _accountDal.Update(updateAccount);
             return new SuccessResult("Account updated.");
@@ -96,11 +81,13 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
+
             var account = _accountDal.Get(a => a.Id == id);
             if (account == null)
             {
                 return new ErrorResult("Account not found.");
             }
+
             _accountDal.Delete(account);
             return new SuccessResult("Account deleted.");
         }
@@ -111,11 +98,13 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListAccountDto>("Invalid id.");
             }
+
             var account = _accountDal.Get(c => c.Id == id);
             if (account == null)
             {
                 return new ErrorDataResult<ListAccountDto>("Account not found.");
             }
+
             var listAccount = _mapper.Map<ListAccountDto>(account);
             return new SuccessDataResult<ListAccountDto>(listAccount, "Account listed.");
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Models;
 using Models.DTOs.Transaction;
@@ -6,6 +7,7 @@ using Models.Enums;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
+using Services.ValidationRules.Transaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,18 +31,13 @@ namespace Services.Concrete
 
         public IResult Add(CreateTransactionDto dto)
         {
-            if (dto.DebitCardId <= 0 || dto.CreditCardId <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new CreateTransactionValidator(), dto);
 
             if (dto.DebitCardId != null && dto.CreditCardId != null || dto.DebitCardId == null && dto.CreditCardId == null)
             {
                 return new ErrorResult("Transaction must have either DebitCardId or CreditCardId.");
             }
-
-            CardType cardType = default;
-
+          
             var transactionTypeMapping = new Dictionary<string, TransactionType>
             {
                  { "Income", TransactionType.Income },
@@ -51,6 +48,7 @@ namespace Services.Concrete
                 return new ErrorResult("Invalid transaction type.");
             }
 
+            CardType cardType = default;
             if (dto.DebitCardId != null)
             {
                 cardType = CardType.DebitCard;
@@ -128,16 +126,6 @@ namespace Services.Concrete
                     return new ErrorResult("Transaction amount exceeds current limit.");
                 }
                 _context.SaveChanges();
-            }
-
-            if (dto.Description != null && dto.Description.Length > 100)
-            {
-                return new ErrorResult("Description field cannot exceed 100 characters.");
-            }
-
-            if (dto.Amount <= 0)
-            {
-                return new ErrorResult("Transaction amount cannot be equal to or less than 0.");
             }
 
             Transaction newTransaction = new Transaction
@@ -156,10 +144,7 @@ namespace Services.Concrete
 
         public IResult Update(UpdateTransactionDto dto)
         {
-            if (dto.Id <= 0 || dto.DebitCardId <= 0 || dto.CreditCardId <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new UpdateTransactionValidator(), dto);
 
             var transaction = _transactionDal.Get(t => t.Id == dto.Id);
             if (transaction == null)
@@ -172,8 +157,6 @@ namespace Services.Concrete
                 return new ErrorResult("Transaction must have either DebitCardId or CreditCardId.");
             }
 
-            CardType cardType = default;
-
             var transactionTypeMapping = new Dictionary<string, TransactionType>
             {
                  { "Income", TransactionType.Income },
@@ -184,6 +167,7 @@ namespace Services.Concrete
                 return new ErrorResult("Invalid transaction type.");
             }
 
+            CardType cardType = default;
             if (dto.DebitCardId != null)
             {
                 cardType = CardType.DebitCard;
@@ -263,15 +247,6 @@ namespace Services.Concrete
                 _context.SaveChanges();
             }
 
-            if (dto.Description != null && dto.Description.Length > 100)
-            {
-                return new ErrorResult("Description field cannot exceed 100 characters.");
-            }
-
-            if (dto.Amount <= 0)
-            {
-                return new ErrorResult("Transaction amount cannot be equal to or less than 0.");
-            }
             var updateTransaction = _mapper.Map(dto, transaction);
             _transactionDal.Update(updateTransaction);
             return new SuccessResult("Transaction updated.");
@@ -283,11 +258,13 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
+
             var transaction = _transactionDal.Get(c => c.Id == id);
             if (transaction == null)
             {
                 return new ErrorResult("Transaction not found.");
             }
+
             _transactionDal.Delete(transaction);
             return new SuccessResult("Transaction deleted.");
         }
@@ -298,11 +275,13 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListTransactionDto>("Invalid id.");
             }
+
             var transaction = _transactionDal.Get(c => c.Id == id);
             if (transaction == null)
             {
                 return new ErrorDataResult<ListTransactionDto>("Transaction not found.");
             }
+
             var listTransaction = _mapper.Map<ListTransactionDto>(transaction);
             return new SuccessDataResult<ListTransactionDto>(listTransaction, "Transaction listed.");
         }

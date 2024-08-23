@@ -15,7 +15,7 @@ namespace Models
         public string ExpirationDate { get; set; }
         public string CCV { get; set; }
         public decimal Balance { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } 
         public Account Account { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
     }

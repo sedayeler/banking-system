@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Microsoft.VisualBasic;
 using Models;
@@ -6,6 +7,7 @@ using Models.DTOs.DebitCard;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
+using Services.ValidationRules.DebitCard;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,18 +35,12 @@ namespace Services.Concrete
 
         public IResult Add(CreateDebitCardDto dto)
         {
-            if (dto.AccountId <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new CreateDebitCardValidator(), dto);
+
             var account = _context.accounts.Any(a => a.Id == dto.AccountId);
             if (!account)
             {
                 return new ErrorResult("Account not found.");
-            }
-            if (dto.Balance < 0)
-            {
-                return new ErrorResult("Balance cannot be less than 0.");
             }
 
             string dateFormat = "MM/yy";
@@ -64,24 +60,20 @@ namespace Services.Concrete
 
         public IResult Update(UpdateDebitCardDto dto)
         {
-            if (dto.Id <= 0 || dto.AccountId <= 0)
-            {
-                return new ErrorResult("Invalid id.");
-            }
+            ValidationTool.Validate(new UpdateDebitCardValidator(), dto);
+
             var debitCard = _debitCardDal.Get(d => d.Id == dto.Id);
             if (debitCard == null)
             {
                 return new ErrorResult("Debit card not found.");
             }
+
             var account = _context.accounts.Any(a => a.Id == dto.AccountId);
             if (!account)
             {
                 return new ErrorResult("Account not found.");
             }
-            if (dto.Balance < 0)
-            {
-                return new ErrorResult("Balance cannot be less than 0.");
-            }
+
             DebitCard updateDebitCard = _mapper.Map(dto, debitCard);
             _debitCardDal.Update(updateDebitCard);
             return new SuccessResult("Debit card updated.");
@@ -93,11 +85,13 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Invalid id.");
             }
+
             var debitCard = _debitCardDal.Get(d => d.Id == id);
             if (debitCard == null)
             {
                 return new ErrorResult("Debit card not found.");
             }
+
             _debitCardDal.Delete(debitCard);
             return new SuccessResult("Debit card deleted.");
         }
@@ -108,11 +102,13 @@ namespace Services.Concrete
             {
                 return new ErrorDataResult<ListDebitCardDto>("Invalid id.");
             }
+
             var debitCard = _debitCardDal.Get(d => d.Id == id);
             if (debitCard == null)
             {
                 return new ErrorDataResult<ListDebitCardDto>("Debit card not found.");
             }
+
             var listDebitCard = _mapper.Map<ListDebitCardDto>(debitCard);
             return new SuccessDataResult<ListDebitCardDto>(listDebitCard, "Debit card listed.");
         }
