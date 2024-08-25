@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Microsoft.VisualBasic;
@@ -7,9 +8,11 @@ using Models.DTOs.DebitCard;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
+using Services.ValidationRules.Customer;
 using Services.ValidationRules.DebitCard;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -33,10 +36,9 @@ namespace Services.Concrete
             _generatorService = generatorService;
         }
 
+        [ValidationAspect(typeof(CreateDebitCardValidator))]
         public IResult Add(CreateDebitCardDto dto)
         {
-            ValidationTool.Validate(new CreateDebitCardValidator(), dto);
-
             var account = _context.accounts.Any(a => a.Id == dto.AccountId);
             if (!account)
             {
@@ -58,10 +60,9 @@ namespace Services.Concrete
             return new SuccessResult("Debit card created.");
         }
 
+        [ValidationAspect(typeof(UpdateDebitCardValidator))]
         public IResult Update(UpdateDebitCardDto dto)
         {
-            ValidationTool.Validate(new UpdateDebitCardValidator(), dto);
-
             var debitCard = _debitCardDal.Get(d => d.Id == dto.Id);
             if (debitCard == null)
             {

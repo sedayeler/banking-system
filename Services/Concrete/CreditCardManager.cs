@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Models;
@@ -31,10 +32,9 @@ namespace Services.Concrete
             _generatorService = generatorService;
         }
 
+        [ValidationAspect(typeof(CreateCreditCardValidator))]
         public IResult Add(CreateCreditCardDto dto)
         {
-            ValidationTool.Validate(new CreateCreditCardValidator(), dto);
-
             var customer = _context.customers.SingleOrDefault(c => c.Id == dto.CustomerId);
             if (customer == null)
             {
@@ -61,10 +61,9 @@ namespace Services.Concrete
             return new SuccessResult("Credit card created.");
         }
 
+        [ValidationAspect(typeof(UpdateCreditCardValidator))]
         public IResult Update(UpdateCreditCardDto dto)
         {
-            ValidationTool.Validate(new UpdateCreditCardValidator(), dto);
-
             var creditCard = _creditCardDal.Get(c => c.Id == dto.Id);
             if (creditCard == null)
             {

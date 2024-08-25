@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Models;
@@ -30,10 +31,9 @@ namespace Services.Concrete
             _generatorService = generatorService;
         }
 
+        [ValidationAspect(typeof(CreatAccountValidator))]
         public IResult Add(CreateAccountDto dto)
         {
-            ValidationTool.Validate(new CreatAccountValidator(), dto);
-
             var customer = _context.customers.Any(c => c.Id == dto.CustomerId);
             if (!customer)
             {
@@ -54,10 +54,9 @@ namespace Services.Concrete
             return new SuccessResult("Account created.");
         }
 
+        [ValidationAspect(typeof(UpdateAccountValidator))]
         public IResult Update(UpdateAccountDto dto)
         {
-            ValidationTool.Validate(new UpdateAccountValidator(), dto);
-
             var account = _accountDal.Get(a => a.Id == dto.Id);
             if (account == null)
             {

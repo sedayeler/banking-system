@@ -1,5 +1,8 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using AutoMapper;
+using Castle.DynamicProxy;
+using Core.Utilities.Interceptors;
 using Repositories.Abstract;
 using Repositories.Concrete;
 using Services.Abstract;
@@ -36,6 +39,14 @@ namespace Services.DependencyResolvers.Autofac
             });
             IMapper mapper = mapperConfig.CreateMapper();
             builder.RegisterInstance(mapper).As<IMapper>().SingleInstance();
+
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                {
+                    Selector = new AspectInterceptorSelector()
+                }).SingleInstance();
         }
     }
 }

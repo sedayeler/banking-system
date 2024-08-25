@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Models;
 using Core.Utilities.Result;
@@ -32,10 +33,9 @@ namespace Services.Concrete
             _mapper = mapper;
         }
 
+        [ValidationAspect(typeof(CreateCustomerValidator))]
         public IResult Add(CreateCustomerDto dto)
         {
-            ValidationTool.Validate(new CreateCustomerValidator(), dto);
-
             var customer = _context.customers.Any(c => c.NationalId == dto.NationalId);
             if (customer)
             {
@@ -47,10 +47,9 @@ namespace Services.Concrete
             return new SuccessResult("Customer added.");
         }
 
+        [ValidationAspect(typeof(UpdateCustomerValidator))]
         public IResult Update(UpdateCustomerDto dto)
         {
-            ValidationTool.Validate(new UpdateCustomerValidator(), dto);
-
             var customer = _customerDal.Get(c => c.Id == dto.Id);
             if (customer == null)
             {

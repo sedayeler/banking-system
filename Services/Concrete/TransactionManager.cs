@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using Models;
@@ -29,10 +30,9 @@ namespace Services.Concrete
             _mapper = mapper;
         }
 
+        [ValidationAspect(typeof(CreateTransactionValidator))]
         public IResult Add(CreateTransactionDto dto)
         {
-            ValidationTool.Validate(new CreateTransactionValidator(), dto);
-
             if (dto.DebitCardId != null && dto.CreditCardId != null || dto.DebitCardId == null && dto.CreditCardId == null)
             {
                 return new ErrorResult("Transaction must have either DebitCardId or CreditCardId.");
@@ -142,10 +142,9 @@ namespace Services.Concrete
             return new SuccessResult("Transaction created.");
         }
 
+        [ValidationAspect(typeof(UpdateTransactionValidator))]
         public IResult Update(UpdateTransactionDto dto)
         {
-            ValidationTool.Validate(new UpdateTransactionValidator(), dto);
-
             var transaction = _transactionDal.Get(t => t.Id == dto.Id);
             if (transaction == null)
             {
