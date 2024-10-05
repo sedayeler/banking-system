@@ -16,8 +16,8 @@ namespace Models
         public string CCV { get; set; }
         public decimal Limit { get; set; }
         public decimal Debt { get; set; }
-        public bool IsActive { get; set; } 
-        public Customer customer;
-        public ICollection<Transaction> Transactions { get; set; }  
+        public bool IsActive { get; set; }
+        public Customer Customer { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
     }
 }
