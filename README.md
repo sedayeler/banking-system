@@ -42,8 +42,8 @@ Follow these steps to run the project:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/username/project-name.git
-cd project-name
+git clone https://github.com/sedayeler/banking-system
+cd banking-system
 ```
 
 ### 2. Install Dependencies
