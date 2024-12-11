@@ -16,7 +16,7 @@ namespace Models
         public string IBAN { get; set; }
         public decimal Balance { get; set; }
         public DateTime Date { get; set; }
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; }
         public Customer Customer { get; set; }
         public ICollection<DebitCard> DebitCards { get; set; }
     }

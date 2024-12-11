@@ -48,7 +48,7 @@ namespace Core.Repositories
         {
             using (TContext context = new TContext())
             {
-                return context.Set<TEntity>().Where(filter).FirstOrDefault();
+                return context.Set<TEntity>().Where(filter).SingleOrDefault();
             }
         }
 

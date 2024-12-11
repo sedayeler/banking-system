@@ -37,7 +37,7 @@ namespace Services.Concrete
             {
                 return new ErrorResult("Transaction must have either DebitCardId or CreditCardId.");
             }
-          
+
             var transactionTypeMapping = new Dictionary<string, TransactionType>
             {
                  { "Income", TransactionType.Income },

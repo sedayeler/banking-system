@@ -41,7 +41,7 @@ namespace Services.Concrete
             {
                 return new ErrorResult("National ID number is already in use.");
             }
-            
+
             Customer newCustomer = _mapper.Map<Customer>(dto);
             _customerDal.Add(newCustomer);
             return new SuccessResult("Customer added.");

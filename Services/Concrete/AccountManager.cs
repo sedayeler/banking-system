@@ -44,8 +44,8 @@ namespace Services.Concrete
             {
                 CustomerId = dto.CustomerId,
                 AccountName = dto.AccountName,
-                IBAN = _generatorService.GenerateIBAN(),
                 AccountNumber = _generatorService.GenerateAccountNumber(),
+                IBAN = _generatorService.GenerateIBAN(),
                 Balance = dto.Balance,
                 Date = DateTime.UtcNow,
                 IsActive = true
